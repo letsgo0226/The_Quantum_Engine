@@ -1,0 +1,19 @@
+name: ATGC v42 Device Archive (unsigned)
+on:
+  workflow_dispatch:
+jobs:
+  device-archive:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: xcodegen generate
+      - name: Compile iPhone device archive without signing
+        run: |
+          xcodebuild -project ATGCUQTMv42.xcodeproj -scheme ATGCUQTMv42 -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -archivePath "$PWD/build/ATGC-v42.xcarchive" CODE_SIGNING_ALLOWED=NO archive
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ATGC-v42-device-archive-UNSIGNED-NOT-INSTALLABLE
+          path: build/ATGC-v42.xcarchive
+          if-no-files-found: error
