@@ -1,0 +1,20 @@
+name: ATGCUQTMv42
+options:
+  bundleIdPrefix: org.atgc.research
+settings:
+  base:
+    SWIFT_VERSION: 5.9
+    IPHONEOS_DEPLOYMENT_TARGET: 16.0
+targets:
+  ATGCUQTMv42:
+    type: application
+    platform: iOS
+    sources:
+      - path: ATGCV42
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.atgc.research.uqtmv42
+        GENERATE_INFOPLIST_FILE: YES
+        TARGETED_DEVICE_FAMILY: '1,2'
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
