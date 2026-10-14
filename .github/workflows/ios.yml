@@ -1,0 +1,27 @@
+name: ATGC v42 iOS Build
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  simulator:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        run: xcodegen generate
+      - name: Build unsigned simulator app
+        run: |
+          xcodebuild -project ATGCUQTMv42.xcodeproj -scheme ATGCUQTMv42 -configuration Release -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+      - name: Package simulator app
+        run: |
+          cd build/Build/Products/Release-iphonesimulator
+          zip -qry "$GITHUB_WORKSPACE/ATGC-v42-simulator-app.zip" ATGCUQTMv42.app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ATGC-v42-iOS-Simulator-UNSIGNED
+          path: ATGC-v42-simulator-app.zip
+          if-no-files-found: error
